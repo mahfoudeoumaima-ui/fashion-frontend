@@ -1,0 +1,92 @@
+[
+    {
+        "nom":"chemise biege",
+        "prix": 600 ,
+        "categorie" : "chemise",
+        "image": "ch1.jpeg"
+    } ,
+    {
+        "nom" : "chemise blue" ,
+        "prix": 400 ,
+        "categorie":"chemise",
+        "image":"ch2.jpg"
+    },
+    {
+        "nom":"chemise rouge",
+        "prix": 200 ,
+        "categorie":"chemise",
+        "image":"ch3.jpeg"
+    },
+    {
+        "nom":"chemise rose" ,
+        "prix" : 250 ,
+        "categorie":"chemise",
+        "image":"ch4.jpeg"
+    },
+    {
+        "nom":"ensemble luxe" ,
+        "prix" : 3500 ,
+        "categorie":"ensemble" ,
+        "image": "en1.jpeg"
+    },
+    {
+        "nom":"ensemble simple" ,
+        "prix" : 999 ,
+        "categorie":"ensemble",
+        "image":"en2.jpeg"
+    } ,
+    {
+        "nom":"ensemble verte ",
+        "prix":880,
+        "categorie":"ensemble",
+        "image":"en3.jpeg"
+    },
+    {
+        "nom":" ensemble karaz" ,
+        "prix": 3000,
+        "categorie":"ensemble",
+        "image":"en4.jpeg"
+    },
+    {
+        "nom":" ensemble noir" ,
+        "prix": 2500,
+        "categorie":"ensemble",
+        "image":"en5.jpeg"
+    },
+    {
+        "nom":"ensemble d'élégence",
+        "prix":3000,
+        "categorie":"ensemble",
+        "image":"en6.jpeg"
+    },
+    {
+        "nom":" ensemble angle",
+        "prix":4000,
+        "categorie":"ensemble",
+        "image":"en7.jpeg"
+    },
+    {
+        "nom": "noir jupe",
+        "prix":500,
+        "categorie":"jupe",
+        "image":"jb1.jpeg"
+    },
+    {
+        "nom":"magique jupe",
+        "prix":1000,
+        "categorie":"jupe",
+        "image":"jb2.jpeg"
+    },
+    {
+        "nom":"jupe à volants",
+        "prix":800,
+        "categorie":"jupe",
+        "image":"jb3.jpeg"
+    },
+    {
+        "nom":" simple jupe",
+        "prix":400,
+        "categorie":"jupe",
+        "image":"jb4.jpeg"
+    }
+]

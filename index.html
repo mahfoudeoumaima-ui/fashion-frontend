@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>catalogue prouduits</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+
+<!-- ─── NAVBAR ─── -->
+<nav>
+  <a href="#" class="nav-logo">Éla<span>nce</span></a>
+  <ul class="nav-links">
+    <li><a href="#catalogue">Collection</a></li>
+    <li><a href="#">Nouveautés</a></li>
+    <li><a href="#lookbook">Lookbook</a></li>
+    <li><a href="#">Contact</a></li>
+  </ul>
+  <div class="nav-actions">
+    <button class="nav-icon" title="Recherche" onclick="document.getElementById('input').focus()">🔍</button>
+    <div class="cart-wrap">
+      <button class="nav-icon" title="Panier" onclick="showCart()">🛍</button>
+      <span class="cart-badge" id="cartBadge">0</span>
+    </div>
+  </div>
+</nav>
+
+<!-- ─── HERO ─── -->
+<section class="hero">
+  <div>
+    <p class="hero-eyebrow">Nouvelle Collection 2025</p>
+    <h1 class="hero-title">L'élégance <em>féminine</em><br>redéfinie</h1>
+    <p class="hero-sub">Des pièces soigneusement sélectionnées pour la femme moderne — avec raffinement et caractère.</p>
+    <div class="hero-cta">
+      <a href="#catalogue" class="btn-primary">Explorer la collection</a>
+      <a href="#catalogue" class="btn-outline">Voir les lookbooks</a>
+    </div>
+  </div>
+</section>
+
+<!-- ─── MARQUEE ─── -->
+<div class="marquee-wrap" aria-hidden="true">
+  <div class="marquee-track" id="marqueeTrack">
+    <span class="marquee-item">Livraison gratuite dès 500dh</span>
+    <span class="marquee-item">Nouvelle collection disponible</span>
+    <span class="marquee-item">Qualité premium garantie</span>
+    <span class="marquee-item">Mode féminine & élégante</span>
+    <span class="marquee-item">Livraison gratuite dès 500dh</span>
+    <span class="marquee-item">Nouvelle collection disponible</span>
+    <span class="marquee-item">Qualité premium garantie</span>
+    <span class="marquee-item">Mode féminine & élégante</span>
+  </div>
+</div>
+
+<!-- ─── CATALOGUE ─── -->
+<section class="section" id="catalogue">
+  <div class="section-header">
+    <p class="section-eyebrow">Notre Sélection</p>
+    <h2 class="section-title">Catalogue de Produits</h2>
+  </div>
+
+  <!-- Filter Bar -->
+  <div class="filter-bar" id="filterBar">
+    <input class="filter-input" type="text" id="input" placeholder="Rechercher un produit…" />
+    <input class="filter-input" type="number" id="prix" placeholder="Prix exact (dh)" style="max-width:160px;" />
+    <select class="filter-select" id="categorie">
+      <option value="">Toutes les catégories</option>
+    </select>
+    <button class="btn-search" id="button">Rechercher</button>
+    <span class="results-count" id="resultCount"></span>
+  </div>
+
+  <!-- Category Tabs -->
+  <div class="cat-tabs" id="catTabs" style="padding-top:1.5rem;"></div>
+
+  <!-- Product Grid -->
+  <div class="product-grid" id="liste"></div>
+</section>
+
+
+<!-- ─── LOOKBOOK / POSTS ─── -->
+<section id="lookbook">
+
+  <div class="lookbook-header">
+    <p class="section-eyebrow">Inspiration Mode</p>
+    <h2 class="section-title">Lookbook &amp; Outfits</h2>
+    <div class="lookbook-header-line">
+      <div class="lookbook-diamond"></div>
+    </div>
+    <p style="font-size:0.85rem;color:var(--mist);margin-top:0.8rem;max-width:400px;margin-left:auto;margin-right:auto;">
+      Des tenues soigneusement sélectionnées pour vous inspirer au quotidien.
+    </p>
+  </div>
+
+  <div class="post-filters" id="postFilters">
+    <button class="post-filter-btn active" data-cat="all">✦ Tout</button>
+    <button class="post-filter-btn" data-cat="casual">Casual</button>
+    <button class="post-filter-btn" data-cat="elegant">Élégant</button>
+    <button class="post-filter-btn" data-cat="chic">Chic</button>
+    <button class="post-filter-btn" data-cat="boheme">Bohème</button>
+    <button class="post-filter-btn" data-cat="streetwear">Streetwear</button>
+  </div>
+
+  <div class="posts-grid" id="postsGrid"></div>
+
+  <div class="load-more-wrap">
+    <button class="btn-outline" id="loadMoreBtn">
+      <span>Voir plus d'inspirations</span>
+      <span style="font-size:0.85rem;">↓</span>
+    </button>
+  </div>
+</section>
+
+<!-- ─── FOOTER ─── -->
+<footer>
+  <div class="footer-grid">
+    <div>
+      <p class="footer-brand">Éla<span>nce</span></p>
+      <p class="footer-text">Mode féminine élégante et intemporelle. Des pièces soigneusement sélectionnées pour vous accompagner au quotidien.</p>
+    </div>
+    <div>
+      <p class="footer-heading">Navigation</p>
+      <ul class="footer-links">
+        <li><a href="#catalogue">Collection</a></li>
+        <li><a href="#">Nouveautés</a></li>
+        <li><a href="#lookbook">Lookbook</a></li>
+      </ul>
+    </div>
+    <div>
+      <p class="footer-heading">Informations</p>
+      <ul class="footer-links">
+        <li><a href="#">Livraison</a></li>
+        <li><a href="#">Retours</a></li>
+        <li><a href="#">Contact</a></li>
+        <li><a href="#">FAQ</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <p class="footer-copy">© 2025 Élance — Tous droits réservés</p>
+    <p class="footer-copy" style="color:rgba(253,248,243,0.4);">Fait avec ♥ au Maroc</p>
+  </div>
+</footer>
+
+<!-- ─── MODAL ─── -->
+<div class="modal-bg" id="modalBg" onclick="closeModal(event)">
+  <div class="modal" id="modal">
+    <button class="modal-close" onclick="closeModalDirect()">✕</button>
+    <img class="modal-img" id="modalImg" src="" alt="" />
+    <div class="modal-info">
+      <p class="modal-cat" id="modalCat"></p>
+      <h2 class="modal-name" id="modalName"></h2>
+      <p class="modal-price" id="modalPrice"></p>
+      <div class="modal-divider"></div>
+      <p class="modal-desc">Pièce soigneusement confectionnée, idéale pour toutes les occasions. Tissu de haute qualité, coupe flatteuse et finitions impeccables.</p>
+      <div class="modal-actions">
+        <button class="btn-primary" onclick="addToCartModal()" style="text-align:center;">Ajouter au panier</button>
+        <button class="btn-outline" onclick="closeModalDirect()" style="text-align:center;">Continuer les achats</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ─── TOAST ─── -->
+<div class="toast" id="toast">
+  <span class="toast-icon">✓</span>
+  <span id="toastMsg">Ajouté au panier !</span>
+</div>
+
+<!-- ─── SCRIPTS ─── -->
+<script src="script.js"></script>
+</body>
+</html>
