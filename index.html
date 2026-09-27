@@ -156,8 +156,62 @@
       <div class="modal-divider"></div>
       <p class="modal-desc">Pièce soigneusement confectionnée, idéale pour toutes les occasions. Tissu de haute qualité, coupe flatteuse et finitions impeccables.</p>
       <div class="modal-actions">
-        <button class="btn-primary" onclick="addToCartModal()" style="text-align:center;">Ajouter au panier</button>
-        <button class="btn-outline" onclick="closeModalDirect()" style="text-align:center;">Continuer les achats</button>
+        <button class="btn-primary" onclick="openOrderForm()" style="text-align:center;">Commander maintenant</button>
+        <button class="btn-outline" onclick="addToCartModal()" style="text-align:center;">Ajouter au panier</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ─── MODAL COMMANDE ─── -->
+<div class="modal-bg" id="orderModalBg" onclick="closeOrderModal(event)">
+  <div class="modal" id="orderModal">
+    <button class="modal-close" onclick="closeOrderModalDirect()">✕</button>
+    <div class="order-recap" id="orderRecap"></div>
+    <div class="modal-info">
+      <p class="modal-cat">Vos informations</p>
+      <h2 class="modal-name" style="font-size:1.4rem;">Finaliser la commande</h2>
+      <div class="modal-divider"></div>
+      <form id="orderForm" class="order-form" novalidate>
+        <div class="form-group">
+          <label for="orderNomClient">Nom complet</label>
+          <input type="text" id="orderNomClient" class="filter-input" placeholder="Votre nom et prénom" />
+        </div>
+        <div class="form-group">
+          <label for="orderTel">Numéro de téléphone</label>
+          <input type="tel" id="orderTel" class="filter-input" placeholder="06 12 34 56 78" />
+        </div>
+        <div class="form-group">
+          <label for="orderVille">Ville</label>
+          <input type="text" id="orderVille" class="filter-input" placeholder="Votre ville" />
+        </div>
+        <div class="form-group">
+          <label for="orderAdresse">Adresse complète</label>
+          <textarea id="orderAdresse" class="filter-input order-textarea" rows="2" placeholder="Quartier, rue, numéro..."></textarea>
+        </div>
+        <p class="order-error" id="orderError"></p>
+        <div class="modal-actions">
+          <button type="submit" class="btn-primary" style="text-align:center;">Confirmer la commande</button>
+          <button type="button" class="btn-outline" onclick="closeOrderModalDirect()" style="text-align:center;">Annuler</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<!-- ─── MODAL PANIER ─── -->
+<div class="modal-bg" id="cartModalBg" onclick="closeCartModal(event)">
+  <div class="modal cart-modal" id="cartModal" style="grid-template-columns:1fr;max-width:520px;">
+    <button class="modal-close" onclick="closeCartModalDirect()">✕</button>
+    <div class="modal-info">
+      <p class="modal-cat">Votre sélection</p>
+      <h2 class="modal-name" style="font-size:1.6rem;">Panier</h2>
+      <div class="modal-divider"></div>
+      <div class="cart-list" id="cartList"></div>
+      <div class="cart-total-row" id="cartTotalRow"></div>
+      <div class="modal-actions">
+        <button class="btn-primary" onclick="startCheckout()" style="text-align:center;">Passer la commande</button>
+        <button class="btn-outline" onclick="closeCartModalDirect()" style="text-align:center;">Continuer les achats</button>
       </div>
     </div>
   </div>

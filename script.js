@@ -1,5 +1,7 @@
 let allProducts = [];
-  let cartCount = 0;
+  let cart = [];
+  let orderItems = [];
+  let orderFromCart = false;
   let currentProduct = null;
   let activeCat = '';
 
@@ -53,7 +55,10 @@ let allProducts = [];
           <div class="card-overlay">
             <p class="overlay-name">${p.nom.trim()}</p>
             <p class="overlay-price">${p.prix} dh</p>
-            <button class="btn-add" onclick="openModal(event, ${safeP})">Voir le look</button>
+            <div class="card-overlay-actions">
+              <button class="btn-add" onclick="openModal(event, ${safeP})">Voir le look</button>
+              <button class="btn-add btn-add-cart" onclick="addToCartCard(event, ${safeP})">+ Panier</button>
+            </div>
           </div>
           ${isNew ? '<span class="card-badge">Nouveau</span>' : ''}
           <button class="card-wish" onclick="toggleWish(event, this)" title="Favoris">♡</button>
@@ -155,27 +160,198 @@ let allProducts = [];
   }
 
   function addToCartModal() {
-    if (currentProduct) addToCart(currentProduct.nom.trim());
+    if (currentProduct) addToCart(currentProduct);
     closeModalDirect();
   }
 
-  function addToCart(name) {
-    cartCount++;
-    const badge = document.getElementById('cartBadge');
-    badge.style.display = 'flex';
-    badge.textContent = cartCount;
+  function addToCartCard(e, p) {
+    e.stopPropagation();
+    addToCart(p);
+  }
+
+  function addToCart(product) {
+    const existing = cart.find(it => it.nom === product.nom);
+    if (existing) existing.qty++;
+    else cart.push({ nom: product.nom, prix: product.prix, image: product.image, categorie: product.categorie, qty: 1 });
+
+    updateCartBadge();
+
     const toast = document.getElementById('toast');
-    document.getElementById('toastMsg').textContent = `"${name}" ajouté au panier !`;
+    document.getElementById('toastMsg').textContent = `"${product.nom.trim()}" ajouté au panier !`;
     toast.classList.add('show');
     setTimeout(() => toast.classList.remove('show'), 3000);
   }
 
+  function updateCartBadge() {
+    const totalQty = cart.reduce((s, it) => s + it.qty, 0);
+    const badge = document.getElementById('cartBadge');
+    badge.textContent = totalQty;
+    badge.style.display = totalQty > 0 ? 'flex' : 'none';
+  }
+
+  /* ── PANIER ──────────────────────────────────────────────────── */
   function showCart() {
+    renderCartModal();
+    document.getElementById('cartModalBg').classList.add('open');
+    document.body.style.overflow = 'hidden';
+  }
+
+  function closeCartModal(e) {
+    if (e.target === document.getElementById('cartModalBg')) closeCartModalDirect();
+  }
+
+  function closeCartModalDirect() {
+    document.getElementById('cartModalBg').classList.remove('open');
+    document.body.style.overflow = '';
+  }
+
+  function renderCartModal() {
+    const listEl = document.getElementById('cartList');
+    const totalRow = document.getElementById('cartTotalRow');
+
+    if (!cart.length) {
+      listEl.innerHTML = '<p class="cart-empty">Votre panier est vide.</p>';
+      totalRow.innerHTML = '';
+      return;
+    }
+
+    let total = 0;
+    listEl.innerHTML = cart.map((it, idx) => {
+      const sub = it.prix * it.qty;
+      total += sub;
+      return `
+        <div class="cart-row">
+          <img src="${it.image}" alt="${it.nom.trim()}" class="cart-row-img" />
+          <div class="cart-row-info">
+            <p class="cart-row-name">${it.nom.trim()}</p>
+            <p class="cart-row-price">${it.prix} dh</p>
+          </div>
+          <div class="cart-qty">
+            <button type="button" onclick="changeQty(${idx}, -1)">−</button>
+            <span>${it.qty}</span>
+            <button type="button" onclick="changeQty(${idx}, 1)">+</button>
+          </div>
+          <p class="cart-row-sub">${sub} dh</p>
+          <button type="button" class="cart-remove" onclick="removeFromCart(${idx})" title="Retirer">✕</button>
+        </div>`;
+    }).join('');
+
+    totalRow.innerHTML = `<span>Total</span><span>${total} dh</span>`;
+  }
+
+  function changeQty(idx, delta) {
+    cart[idx].qty += delta;
+    if (cart[idx].qty <= 0) cart.splice(idx, 1);
+    updateCartBadge();
+    renderCartModal();
+  }
+
+  function removeFromCart(idx) {
+    cart.splice(idx, 1);
+    updateCartBadge();
+    renderCartModal();
+  }
+
+  /* ── FORMULAIRE DE COMMANDE ─────────────────────────────────── */
+  function renderOrderRecap(items) {
+    const recap = document.getElementById('orderRecap');
+    if (!items.length) {
+      recap.innerHTML = '<p class="order-recap-empty">Aucun article.</p>';
+      return;
+    }
+    let total = 0;
+    const rows = items.map(it => {
+      const sub = it.prix * (it.qty || 1);
+      total += sub;
+      return `
+        <div class="order-recap-row">
+          <img src="${it.image}" alt="${it.nom.trim()}" />
+          <div class="order-recap-info">
+            <p class="order-recap-name">${it.nom.trim()}</p>
+            <p class="order-recap-meta">${it.qty || 1} × ${it.prix} dh</p>
+          </div>
+          <p class="order-recap-sub">${sub} dh</p>
+        </div>`;
+    }).join('');
+    recap.innerHTML = rows + `<div class="order-recap-total"><span>Total</span><span>${total} dh</span></div>`;
+  }
+
+  function showOrderModal(items, fromCart) {
+    orderItems = items;
+    orderFromCart = fromCart;
+    renderOrderRecap(items);
+    document.getElementById('orderModalBg').classList.add('open');
+    document.body.style.overflow = 'hidden';
+  }
+
+  function openOrderForm() {
+    if (!currentProduct) return;
+    closeModalDirect();
+    showOrderModal([{ ...currentProduct, qty: 1 }], false);
+  }
+
+  function startCheckout() {
+    if (!cart.length) return;
+    closeCartModalDirect();
+    showOrderModal(cart.map(it => ({ ...it })), true);
+  }
+
+  function closeOrderModal(e) {
+    if (e.target === document.getElementById('orderModalBg')) closeOrderModalDirect();
+  }
+
+  function closeOrderModalDirect() {
+    document.getElementById('orderModalBg').classList.remove('open');
+    document.body.style.overflow = '';
+    document.getElementById('orderForm').reset();
+    document.getElementById('orderError').textContent = '';
+  }
+
+  document.getElementById('orderForm').addEventListener('submit', (e) => {
+    e.preventDefault();
+
+    const nom = document.getElementById('orderNomClient').value.trim();
+    const tel = document.getElementById('orderTel').value.trim();
+    const ville = document.getElementById('orderVille').value.trim();
+    const adresse = document.getElementById('orderAdresse').value.trim();
+    const errorEl = document.getElementById('orderError');
+
+    if (!nom || !tel || !ville || !adresse) {
+      errorEl.textContent = 'Merci de remplir tous les champs.';
+      return;
+    }
+
+    const phoneOK = /^[0-9+\s]{9,15}$/.test(tel);
+    if (!phoneOK) {
+      errorEl.textContent = 'Numéro de téléphone invalide.';
+      return;
+    }
+
+    errorEl.textContent = '';
+
+    const total = orderItems.reduce((s, it) => s + it.prix * (it.qty || 1), 0);
+    const commande = {
+      articles: orderItems.map(it => ({ produit: it.nom.trim(), prix: it.prix, quantite: it.qty || 1 })),
+      total,
+      client: { nom, tel, ville, adresse }
+    };
+
+    // ── à remplacer plus tard par un envoi vers un backend (PHP/MySQL, fetch, etc.) ──
+    console.log('Nouvelle commande :', commande);
+
+    if (orderFromCart) {
+      cart = [];
+      updateCartBadge();
+    }
+
+    closeOrderModalDirect();
     const toast = document.getElementById('toast');
-    document.getElementById('toastMsg').textContent = cartCount ? `${cartCount} article${cartCount > 1 ? 's' : ''} dans votre panier` : 'Votre panier est vide';
+    document.getElementById('toastMsg').textContent = orderItems.length > 1
+      ? `Commande de ${orderItems.length} articles confirmée, ${nom} !`
+      : `Commande de "${orderItems[0].nom.trim()}" confirmée, ${nom} !`;
     toast.classList.add('show');
     setTimeout(() => toast.classList.remove('show'), 3000);
-  }
+  });
 
   function toggleWish(e, btn) {
     e.stopPropagation();
